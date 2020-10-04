@@ -29,6 +29,7 @@ dependencies:
   flutter_bloc:
   logger:
   flutter_staggered_grid_view:
+  transparent_image: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

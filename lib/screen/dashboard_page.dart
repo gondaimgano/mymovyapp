@@ -4,6 +4,7 @@ import 'package:mymovyapp/bloc/index.dart';
 import 'package:mymovyapp/components/now_playing_component.dart';
 import 'package:mymovyapp/components/popular_component.dart';
 import 'package:mymovyapp/components/toprated_component.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -11,15 +12,12 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  ScrollController _controllerTopRated;
-  ScrollController _controllerPopular;
-  ScrollController _controllerNowPlaying;
+  final ScrollController _controllerTopRated = ScrollController();
+  final ScrollController _controllerPopular = ScrollController();
+  final ScrollController _controllerNowPlaying = ScrollController();
 
   @override
   void initState() {
-    _controllerTopRated = ScrollController();
-    _controllerPopular = ScrollController();
-    _controllerNowPlaying = ScrollController();
     super.initState();
 
     _controllerTopRated.addListener(() {
@@ -44,10 +42,6 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: Icon(Icons.headset_mic),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -75,19 +69,20 @@ class _DashboardPageState extends State<DashboardPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                25.0 * (state is FeaturedInProgress ? 0 : 1),
               ),
-              child: Image.network(
-                context.bloc<FeaturedCubit>().response.images.secureBaseUrl +
-                    "/w500" +
-                    state.movie.posterPath,
-                width: constraints.maxWidth * 0.45,
-                height: constraints.maxHeight,
-                fit: BoxFit.cover,
-              ),
+            ),
+            child: FadeInImage.memoryNetwork(
+              width: constraints.maxWidth * 0.45,
+              height: constraints.maxHeight,
+              fit: BoxFit.cover,
+              image:
+                  context.bloc<FeaturedCubit>().response.images.secureBaseUrl +
+                      "/w500" +
+                      state.movie.posterPath,
+              placeholder: kTransparentImage,
             ),
           ),
           Expanded(
@@ -116,13 +111,15 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: CircularProgressIndicator(),
                 );
               else
-                return _generateFeatureRow(state, constraints);
+                return Container(); //_generateFeatureRow(state, constraints);
 
               return _generateFeatureRow(state, constraints);
             },
           ),
         ),
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is FeaturedInProgress) setState(() {});
+        },
       ),
     );
   }
