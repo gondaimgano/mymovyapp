@@ -37,17 +37,21 @@ class Root extends StatelessWidget {
         BlocProvider(
           create: (_) => TopRatedCubit(context.repository<MovieController>())
             ..fetchTopMovies(),
+          lazy: false,
         ),
         BlocProvider(
           create: (_) => PopularCubit(context.repository<MovieController>())
             ..fetchTopMovies(),
+          lazy: false,
         ),
         BlocProvider(
           create: (_) => NowPlayingCubit(context.repository<MovieController>())
             ..fetchTopMovies(),
+          lazy: false,
         ),
         BlocProvider(
           create: (_) => FeaturedCubit(context.repository<MovieController>()),
+          lazy: false,
         )
       ],
       child: MyApp(),
