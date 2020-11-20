@@ -40,7 +40,7 @@ abstract class MovieApiService extends ChopperService {
 
   static Request _addQuery(Request req) {
     final params = Map<String, dynamic>.from(req.parameters);
-    // TODO (ADD YOUR API KEY HEAR)
+    // TODO (ADD YOUR API KEY HERE)
     params['api_key'] = '';
     params['language'] = 'en-US';
 
