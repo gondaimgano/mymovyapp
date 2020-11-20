@@ -6,56 +6,42 @@ part 'movie_service.chopper.dart';
 
 @ChopperApi(baseUrl: '/3')
 abstract class MovieApiService extends ChopperService {
-
-
   @Get(path: '/movie/top_rated')
-  Future<Response> getTopRatedMovies(
-      @Query() int page
-      );
+  Future<Response> getTopRatedMovies(@Query() int page);
 
   @Get(path: '/movie/popular')
-  Future<Response> getPopularMovies(
-      @Query() int page
-      );
+  Future<Response> getPopularMovies(@Query() int page);
 
   @Get(path: '/movie/now_playing')
-  Future<Response> getNowPlayingMovies(
-      @Query() int page
-      );
+  Future<Response> getNowPlayingMovies(@Query() int page);
 
   @Get(path: '/movie/{movieId}/similar')
-  Future<Response> getSimilarMovies(
-      @Path() int movieId,
-      @Query() int page
-      );
+  Future<Response> getSimilarMovies(@Path() int movieId, @Query() int page);
 
   @Get(path: '/configuration')
   Future<Response> getConfigs();
-  
+
   static MovieApiService create() {
     final client = ChopperClient(
-      // The first part of the URL is now here E.G https://jsonplaceholder.typicode.com
-      baseUrl: 'https://api.themoviedb.org',
-      services: [
-        // The generated implementation
-        _$MovieApiService(),
-      ],
-      interceptors: [
-        HttpLoggingInterceptor(),
-         _addQuery
-      ],
-      // Converts data to & from JSON and adds the application/json header.
-      converter: JsonConverter(),
-      errorConverter: JsonConverter()
-    );
+        // The first part of the URL is now here E.G https://jsonplaceholder.typicode.com
+        baseUrl: 'https://api.themoviedb.org',
+        services: [
+          // The generated implementation
+          _$MovieApiService(),
+        ],
+        interceptors: [HttpLoggingInterceptor(), _addQuery],
+        // Converts data to & from JSON and adds the application/json header.
+        converter: JsonConverter(),
+        errorConverter: JsonConverter());
 
     // The generated class with the ChopperClient passed in
     return _$MovieApiService(client);
   }
 
- static Request _addQuery(Request req) {
+  static Request _addQuery(Request req) {
     final params = Map<String, dynamic>.from(req.parameters);
-    params['api_key'] = '6a381a437a01fb252f224befc00f772f';
+    // TODO (ADD YOUR API KEY HEAR)
+    params['api_key'] = '';
     params['language'] = 'en-US';
 
     return req.copyWith(parameters: params);
